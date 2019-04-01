@@ -12,9 +12,8 @@ const (
 	{{#allowableValues}}
 	{{#enumVars}}
 	{{^-first}}
-
 	{{/-first}}
-	{{name}} {{{classname}}} = "{{{value}}}"
+	{{name}}_{{{classname}}} {{{classname}}} = "{{{value}}}"
 	{{/enumVars}}
 	{{/allowableValues}}
 ){{/isEnum}}{{^isEnum}}{{#description}}
@@ -22,7 +21,6 @@ const (
 type {{classname}} struct {
 {{#vars}}
 {{^-first}}
-
 {{/-first}}
 {{#description}}
 	// {{{description}}}

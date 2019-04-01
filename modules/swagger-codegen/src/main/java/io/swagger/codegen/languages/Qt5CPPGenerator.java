@@ -117,6 +117,7 @@ public class Qt5CPPGenerator extends AbstractCppCodegen implements CodegenConfig
         supportingFiles.add(new SupportingFile("HttpRequest.cpp.mustache", sourceFolder, PREFIX + "HttpRequest.cpp"));
         supportingFiles.add(new SupportingFile("modelFactory.mustache", sourceFolder, PREFIX + "ModelFactory.h"));
         supportingFiles.add(new SupportingFile("object.mustache", sourceFolder, PREFIX + "Object.h"));
+        supportingFiles.add(new SupportingFile("QObjectWrapper.h.mustache", sourceFolder, PREFIX + "QObjectWrapper.h"));
         if (optionalProjectFileFlag) {
             supportingFiles.add(new SupportingFile("Project.mustache", sourceFolder, "client.pri"));
         }
@@ -159,21 +160,6 @@ public class Qt5CPPGenerator extends AbstractCppCodegen implements CodegenConfig
         systemIncludes.add("QByteArray");
     }
 
-    protected void addOption(String key, String description, String defaultValue) {
-        CliOption option = new CliOption(key, description);
-        if (defaultValue != null)
-            option.defaultValue(defaultValue);
-        cliOptions.add(option);
-    }
-
-    protected void addSwitch(String key, String description, Boolean defaultValue) {
-        CliOption option = CliOption.newBoolean(key, description);
-        if (defaultValue != null)
-           option.defaultValue(defaultValue.toString());
-        cliOptions.add(option);
-    }
-
-
     @Override
     public void processOpts() {
         super.processOpts();
@@ -191,6 +177,7 @@ public class Qt5CPPGenerator extends AbstractCppCodegen implements CodegenConfig
             supportingFiles.add(new SupportingFile("HttpRequest.cpp.mustache", sourceFolder, modelNamePrefix + "HttpRequest.cpp"));
             supportingFiles.add(new SupportingFile("modelFactory.mustache", sourceFolder, modelNamePrefix + "ModelFactory.h"));
             supportingFiles.add(new SupportingFile("object.mustache", sourceFolder, modelNamePrefix + "Object.h"));
+            supportingFiles.add(new SupportingFile("QObjectWrapper.h.mustache", sourceFolder, modelNamePrefix + "QObjectWrapper.h"));
 
             typeMapping.put("object", modelNamePrefix + "Object");
             typeMapping.put("file", modelNamePrefix + "HttpRequestInputFileElement");

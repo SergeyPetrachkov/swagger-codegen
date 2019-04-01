@@ -59,7 +59,7 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://localhost/v2*
+All URIs are relative to *http://petstore.swagger.io/v2*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -87,8 +87,10 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [Amount](docs//Amount.md)
  - [ApiResponse](docs//ApiResponse.md)
  - [Category](docs//Category.md)
+ - [Currency](docs//Currency.md)
  - [Order](docs//Order.md)
  - [Pet](docs//Pet.md)
  - [Tag](docs//Tag.md)

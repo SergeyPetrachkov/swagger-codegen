@@ -18,7 +18,7 @@ class ApiClient {
   final _RegList = new RegExp(r'^List<(.*)>$');
   final _RegMap = new RegExp(r'^Map<String,(.*)>$');
 
-  ApiClient({this.basePath: "http://localhost/v2"}) {
+  ApiClient({this.basePath: "http://petstore.swagger.io/v2"}) {
     // Setup authentications (key: authentication name, value: authentication).
     _authentications['api_key'] = new ApiKeyAuth("header", "api_key");
     _authentications['petstore_auth'] = new OAuth();
@@ -39,10 +39,14 @@ class ApiClient {
           return value is bool ? value : '$value'.toLowerCase() == 'true';
         case 'double':
           return value is double ? value : double.parse('$value');
+        case 'Amount':
+          return new Amount.fromJson(value);
         case 'ApiResponse':
           return new ApiResponse.fromJson(value);
         case 'Category':
           return new Category.fromJson(value);
+        case 'Currency':
+          return new Currency.fromJson(value);
         case 'Order':
           return new Order.fromJson(value);
         case 'Pet':
@@ -72,13 +76,13 @@ class ApiClient {
     throw new ApiException(500, 'Could not find a suitable class for deserialization');
   }
 
-  dynamic deserialize(String json, String targetType) {
+  dynamic deserialize(String jsonVal, String targetType) {
     // Remove all spaces.  Necessary for reg expressions as well.
     targetType = targetType.replaceAll(' ', '');
 
-    if (targetType == 'String') return json;
+    if (targetType == 'String') return jsonVal;
 
-    var decodedJson = JSON.decode(json);
+    var decodedJson = json.decode(jsonVal);
     return _deserialize(decodedJson, targetType);
   }
 
@@ -87,7 +91,7 @@ class ApiClient {
     if (obj == null) {
       serialized = '';
     } else {
-      serialized = JSON.encode(obj);
+      serialized = json.encode(obj);
     }
     return serialized;
   }

@@ -78,7 +78,8 @@ public class FlaskConnexionCodegen extends DefaultCodegen implements CodegenConf
                     "and", "del", "from", "not", "while", "as", "elif", "global", "or", "with",
                     "assert", "else", "if", "pass", "yield", "break", "except", "import",
                     "print", "class", "exec", "in", "raise", "continue", "finally", "is",
-                    "return", "def", "for", "lambda", "try", "self", "None", "True", "False", "nonlocal"));
+                    "return", "def", "for", "lambda", "try", "self", "None", "True", "False", "nonlocal",
+                    "float", "int", "str", "date", "datetime"));
 
         // set the output folder here
         outputFolder = "generated-code/connexion";
@@ -687,10 +688,8 @@ public class FlaskConnexionCodegen extends DefaultCodegen implements CodegenConf
         if(pattern != null) {
             int i = pattern.lastIndexOf('/');
 
-            //Must follow Perl /pattern/modifiers convention
             if(pattern.charAt(0) != '/' || i < 2) {
-                throw new IllegalArgumentException("Pattern must follow the Perl "
-                        + "/pattern/modifiers convention. "+pattern+" is not valid.");
+                pattern = String.format("/%s/", pattern);
             }
 
             String regex = pattern.substring(1, i).replace("'", "\\'");

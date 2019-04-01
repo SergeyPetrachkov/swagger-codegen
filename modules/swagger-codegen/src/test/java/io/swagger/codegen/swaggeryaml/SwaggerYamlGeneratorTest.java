@@ -1,16 +1,23 @@
 package io.swagger.codegen.swaggeryaml;
 
 import io.swagger.codegen.ClientOptInput;
+import io.swagger.codegen.CodegenConstants;
 import io.swagger.codegen.DefaultGenerator;
 import io.swagger.codegen.config.CodegenConfigurator;
 import org.apache.commons.io.FileUtils;
 import org.junit.rules.TemporaryFolder;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
 
 public class SwaggerYamlGeneratorTest {
+
+    @AfterClass
+    public void cleanup() {
+        System.clearProperty(CodegenConstants.SUPPORTING_FILES);
+    }
 
     @Test
     public void testLongText() throws Exception {
@@ -35,6 +42,31 @@ public class SwaggerYamlGeneratorTest {
 
         Assert.assertTrue(content.contains(LONG_DESCRIPTION_SAMPLE));
         Assert.assertTrue(content.contains(LONG_DESCRIPTION_SAMPLE2));
+
+        folder.delete();
+
+    }
+
+    @Test
+    public void testNumberAsStrings() throws Exception {
+        final TemporaryFolder folder = new TemporaryFolder();
+        folder.create();
+        final File output = folder.getRoot();
+        final CodegenConfigurator configurator = new CodegenConfigurator()
+                .setLang("swagger-yaml")
+                .setInputSpec("src/test/resources/2_0/petstore_issue_7999.json")
+                .setOutputDir(output.getAbsolutePath());
+
+        final ClientOptInput clientOptInput = configurator.toClientOptInput();
+        new DefaultGenerator().opts(clientOptInput).generate();
+
+        File outputFile = new File(output, "swagger.yaml");
+        Assert.assertTrue(outputFile.exists());
+
+        String content = FileUtils.readFileToString(outputFile);
+
+        Assert.assertTrue(content.contains("swagger: \"2.0\""));
+        Assert.assertTrue(content.contains("version: \"1.0\""));
 
         folder.delete();
 
